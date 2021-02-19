@@ -9,32 +9,32 @@ pipeline{
             stage('Git-Checkout')
             {
               steps{
-                     git 'https://github.com/sreelakshmi665/SonarQube/SonarQubePipeLine'
+                     git 'https://github.com/sreelakshmi665/SonarQube'
                 }
             }
              stage('Clean')
         {
             steps{
-              sh 'mvn clean'
+              sh 'mvn -f SonarQubePipeLine clean'
             }
         }
              stage('Validate')
         {
             steps{
-              sh 'mvn validate'
+              sh 'mvn -f SonarQubePipeLine validate'
             }
         }
         stage('Compile')
         {
             steps{
-               sh 'mvn compile'
+               sh 'mvn -f SonarQubePipeLine compile'
             }
         }
              stage('Sonar Analysis'){
             steps{
                 withSonarQubeEnv('sonar-server'){
                     withMaven(maven:'Maven'){
-                        bat 'mvn sonar:sonar'
+                        bat 'mvn -f SonarQubePipeLine sonar:sonar'
                     }
                 }
             }
@@ -43,25 +43,25 @@ pipeline{
         stage('Test')
         {
             steps{
-                sh 'mvn test'
+                sh 'mvn -f SonarQubePipeLine test'
             }
         }
         stage('Package')
         {
             steps{
-               sh 'mvn package'
+               sh 'mvn -f SonarQubePipeLine package'
             }
         }
         stage('Verify')
         {
             steps{
-               sh 'mvn verify'
+               sh 'mvn -f SonarQubePipeLine verify'
             }
         }
         stage('Install')
         {
             steps{
-                sh 'mvn install'
+                sh 'mvn -f SonarQubePipeLine install'
             }
         }
             
