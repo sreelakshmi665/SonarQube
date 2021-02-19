@@ -9,49 +9,59 @@ pipeline{
             stage('Git-Checkout')
             {
               steps{
-                     git 'https://github.com/sreelakshmi665/SamplePipe.git'
+                     git 'https://github.com/sreelakshmi665/SonarQube/SonarQubePipeLine'
                 }
             }
              stage('Clean')
         {
             steps{
-              sh 'mvn -f SamplePipe/pom.xml clean'
+              sh 'mvn clean'
             }
         }
              stage('Validate')
         {
             steps{
-              sh 'mvn -f SamplePipe/pom.xml validate'
+              sh 'mvn validate'
             }
         }
         stage('Compile')
         {
             steps{
-               sh 'mvn -f SamplePipe/pom.xml compile'
+               sh 'mvn compile'
             }
+        }
+             stage('Sonar Analysis'){
+            steps{
+                withSonarQubeEnv('sonar-server'){
+                    withMaven(maven:'Maven'){
+                        bat 'mvn sonar:sonar'
+                    }
+                }
+            }
+
         }
         stage('Test')
         {
             steps{
-                sh 'mvn -f SamplePipe/pom.xml test'
+                sh 'mvn test'
             }
         }
         stage('Package')
         {
             steps{
-               sh 'mvn -f SamplePipe/pom.xml package'
+               sh 'mvn package'
             }
         }
         stage('Verify')
         {
             steps{
-               sh 'mvn -f SamplePipe/pom.xml verify'
+               sh 'mvn verify'
             }
         }
         stage('Install')
         {
             steps{
-                sh 'mvn -f SamplePipe/pom.xml install'
+                sh 'mvn install'
             }
         }
             
